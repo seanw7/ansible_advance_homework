@@ -1,4 +1,10 @@
 - name: Create Homework Assignment project 
+  tower_project:
+    name: "{{job_template_name_osp_instances}}" # Name to use for the project.
+    state: present 
+    #tower_username: admin
+    #tower_verify_ssl: yes
+    description: Job template for OSP Instances, project created with Ansible task 
 # Use tower module or tower-cli to create Ansible Tower project. Name of the project is specifed in ./vars/main.yml
 
 - name: Machine Credentail to connect to workstation using openstack.pub
