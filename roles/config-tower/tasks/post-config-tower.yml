@@ -16,10 +16,11 @@
     tower_host: tower1.{{tower_GUID}}.example.opentlc.com
     tower_username: admin
     tower_password: r3dh4t1!
+    validate_certs: no
     # ssh_key_data: |
     #   "/root/.ssh/openstack.pem"
     ssh_key_data: |
-      "{{ lookup('file', '/root/.ssh/openstack.pem') }}"
+      "{{ lookup('file', '/root/.ssh/openstack.pem')| b64decode }}"
     username: cloud-user
 
 - name: Create Inventory
