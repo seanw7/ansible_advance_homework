@@ -1,7 +1,11 @@
 - name: Create Homework Assignment project 
   tower_project:
     name: "{{job_template_name_osp_instances}}" # Name to use for the project.
-    state: present 
+    state: present
+    scm_type: git
+    scm_url: "{{scm_url}}"
+    scm_branch: "{{scm_branch}}"
+    scm_update_on_launch: yes
     #tower_username: admin
     #tower_verify_ssl: yes
     description: Job template for OSP Instances, project created with Ansible task 
