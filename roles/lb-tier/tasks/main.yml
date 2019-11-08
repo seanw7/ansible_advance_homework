@@ -1,2 +1,26 @@
 ---
 # tasks file for lb-tier
+# tasks file for haproxy_install
+- name: Install latest version of httpie with Package
+  package:
+    name: httpie
+    state: latest
+
+- name: Install latest version of haproxy with Yum
+  yum:
+    name: haproxy 
+    state: latest
+
+- name: Ensure haproxy is started and enabled
+  service:
+    name: haproxy
+    state: started
+    enabled: yes
+  notify: restart haproxy
+
+- name: Copy J2 template over to configure haproxy
+  template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+    #TODO: Maybe add a handler here; if cfg changed something then use handler to restart
+

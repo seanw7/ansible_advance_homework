@@ -1,2 +1,8 @@
 ---
 # tasks file for base-config
+# tasks file for yum_config
+- name: Configure OpenTLC yum repos
+  copy:
+    src: "{{repo_config_file}}"
+    dest: "/etc/yum.repos.d/{{repo_config_file}}"
+    mode: u=rw,go=r

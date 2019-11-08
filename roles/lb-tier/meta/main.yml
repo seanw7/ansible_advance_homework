@@ -1,7 +1,7 @@
 galaxy_info:
-  author: your name
-  description: your description
-  company: your company (optional)
+  author: SeanW7
+  description: This role installs haproxy and httpie, and configures haproxy
+
 
   # If the issue tracker for your role is not on github, uncomment the
   # next line and provide a value

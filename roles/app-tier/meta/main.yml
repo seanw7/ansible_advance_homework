@@ -1,7 +1,6 @@
 galaxy_info:
-  author: your name
-  description: your description
-  company: your company (optional)
+  author: Seanw7
+  description: This role installs a Tomcat server, and copies a j2 template index.html file
 
   # If the issue tracker for your role is not on github, uncomment the
   # next line and provide a value

@@ -1,2 +1,24 @@
 ---
 # tasks file for app-tier
+# tasks file for tomcat_install
+- name: install latest version of tomcat
+  package:
+    name: tomcat
+    state: latest
+
+- name: create /usr/share/tomcat/webapps/ROOT directory
+  file:
+    path: /usr/share/tomcat/webapps/ROOT
+    state: directory
+
+- name: copy index.html template to /usr/share/tomcat/webapps/ROOT/index.html
+  template:
+    src: index.html.j2
+    dest: /usr/share/tomcat/webapps/ROOT/index.html
+    mode: 0644
+
+- name: Ensure Tomcat is started
+  service:
+    name: tomcat
+    state: started
+    enabled: yes
