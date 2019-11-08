@@ -1,6 +1,6 @@
 - name: Create Homework Assignment project 
   tower_project:
-    name: "{{job_template_name_osp_instances}}" # Name to use for the project.
+    name: "{{proj_name}}" # Name to use for the project.
     state: present
     scm_type: git
     scm_url: "{{scm_url}}"
