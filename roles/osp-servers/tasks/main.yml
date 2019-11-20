@@ -10,6 +10,7 @@
     flavor: "{{ osp_servers.frontend.flavor }}"
     security_groups: frontend
     key_name: ansible_ssh
+    auto_ip: yes
     nics:
     - net-name: int_network
     userdata: |
@@ -29,6 +30,7 @@
     flavor: "{{ osp_servers.app1.flavor }}"
     security_groups: apps
     key_name: ansible_ssh
+    auto_ip: yes
     nics:
     - net-name: int_network
     userdata: |
@@ -48,6 +50,7 @@
     flavor: "{{ osp_servers.app2.flavor }}"
     security_groups: apps
     key_name: ansible_ssh
+    auto_ip: yes
     nics:
     - net-name: int_network
     userdata: |
@@ -67,6 +70,7 @@
     flavor: "{{ osp_servers.db.flavor }}"
     security_groups: db
     key_name: ansible_ssh
+    auto_ip: yes
     nics:
     - net-name: int_network
     userdata: |
@@ -97,13 +101,22 @@
      server: "{{ item.name }}"
   loop: "{{ostack_appname_list}}"
 
-- name: Wait for server to be available
+# - name: Wait for server to be available
+#   wait_for:
+#       #active_connection_states: ESTABLISHED,FIN_WAIT1,FIN_WAIT2,SYN_RECV,SYN_SENT,TIME_WAIT # not required. The list of TCP connection states which are counted as active connections.
+#       host: "{{ item.name }}" # not required. A resolvable hostname or IP address to wait for.
+#       connect_timeout: 5 # not required. Maximum number of seconds to wait for a connection to happen before closing and retrying.
+#       port: 22
+#       state: present # not required. choices: absent;drained;present;started;stopped. Either C(present), C(started), or C(stopped), C(absent), or C(drained).,When checking a port C(started) will ensure the port is open, C(stopped) will check that it is closed, C(drained) will check for active connections.,When checking for a file or a search string C(present) or C(started) will ensure that the file or string is present before continuing, C(absent) will check that file is absent or removed.
+#       sleep: 5 # not required. Number of seconds to sleep between checks, before 2.3 this was hardcoded to 1 second.
+#       timeout: 300 # not required. Maximum number of seconds to wait for, when used with another condition it will force an error.,When used without other conditions it is equivalent of just sleeping.
+#   loop: "{{ostack_appname_list}}"
+
+- name: Check the instances status
   wait_for:
-      active_connection_states: ESTABLISHED,FIN_WAIT1,FIN_WAIT2,SYN_RECV,SYN_SENT,TIME_WAIT # not required. The list of TCP connection states which are counted as active connections.
-      host: "{{ item.name }}" # not required. A resolvable hostname or IP address to wait for.
-      connect_timeout: 5 # not required. Maximum number of seconds to wait for a connection to happen before closing and retrying.
-      #delay: 0 # not required. Number of seconds to wait before starting to poll.
-      state: present # not required. choices: absent;drained;present;started;stopped. Either C(present), C(started), or C(stopped), C(absent), or C(drained).,When checking a port C(started) will ensure the port is open, C(stopped) will check that it is closed, C(drained) will check for active connections.,When checking for a file or a search string C(present) or C(started) will ensure that the file or string is present before continuing, C(absent) will check that file is absent or removed.
-      sleep: 5 # not required. Number of seconds to sleep between checks, before 2.3 this was hardcoded to 1 second.
-      timeout: 300 # not required. Maximum number of seconds to wait for, when used with another condition it will force an error.,When used without other conditions it is equivalent of just sleeping.
+    host: "{{ item }}"
+    port: 22
+    search_regex: OpenSSH
+    timeout: 600
+  delegate_to: localhost
   loop: "{{ostack_appname_list}}"
