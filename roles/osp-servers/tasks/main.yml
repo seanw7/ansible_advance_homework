@@ -1,126 +1,183 @@
 ---
 
-# tasks file for osp.servers- name: Create new server instances and attaches them a network and passes metadata to the instance
-- name: Create a frontend server instance
-  os_server:
-    cloud: ospcloud
-    name: "{{ osp_servers.frontend.name }}"
-    image: rhel-guest
-    meta: "group={{ osp_servers.frontend.meta[0]['group'] }},deployment_name={{ osp_servers.frontend.meta[0]['deployment_name'] }}"
-    flavor: "{{ osp_servers.frontend.flavor }}"
-    security_groups: frontend
-    key_name: ansible_ssh
-    auto_ip: yes
-    nics:
-    - net-name: int_network
-    userdata: |
-      #!/bin/bash
-      curl -o /tmp/openstack.pub http://www.opentlc.com/download/ansible_bootcamp/openstack_keys/openstack.pub
-      cat /tmp/openstack.pub &gt;&gt; /home/cloud-user/.ssh/authorized_keys
-      curl -o /tmp/internal.repo http://www.opentlc.com/download/ansible_bootcamp/repo/internal.repo
-      cp /tmp/internal.repo /etc/yum.repos.d/internal.repo
-  register: web_server_ip
+# # tasks file for osp.servers- name: Create new server instances and attaches them a network and passes metadata to the instance
+# - name: Create a frontend server instance
+#   os_server:
+#     cloud: ospcloud
+#     name: "{{ osp_servers.frontend.name }}"
+#     image: rhel-guest
+#     meta: "group={{ osp_servers.frontend.meta['group'] }},deployment_name={{ osp_servers.frontend.meta['deployment_name'] }}"
+#     flavor: "{{ osp_servers.frontend.flavor }}"
+#     security_groups: frontend
+#     key_name: ansible_ssh
+#     auto_ip: yes
+#     nics:
+#     - net-name: int_network
+#     userdata: |
+#       #!/bin/bash
+#       curl -o /tmp/openstack.pub http://www.opentlc.com/download/ansible_bootcamp/openstack_keys/openstack.pub
+#       cat /tmp/openstack.pub &gt;&gt; /home/cloud-user/.ssh/authorized_keys
+#       curl -o /tmp/internal.repo http://www.opentlc.com/download/ansible_bootcamp/repo/internal.repo
+#       cp /tmp/internal.repo /etc/yum.repos.d/internal.repo
+#   register: web_server_ip
 
-- name: Create first App server instance
-  os_server:
-    cloud: ospcloud
-    name: "{{ osp_servers.app1.name }}"
-    image: rhel-guest
-    meta: "group={{ osp_servers.app1.meta[0]['group'] }},deployment_name={{ osp_servers.app1.meta[0]['deployment_name'] }}"
-    flavor: "{{ osp_servers.app1.flavor }}"
-    security_groups: apps
-    key_name: ansible_ssh
-    auto_ip: yes
-    nics:
-    - net-name: int_network
-    userdata: |
-      #!/bin/bash
-      curl -o /tmp/openstack.pub http://www.opentlc.com/download/ansible_bootcamp/openstack_keys/openstack.pub
-      cat /tmp/openstack.pub &gt;&gt; /home/cloud-user/.ssh/authorized_keys
-      curl -o /tmp/internal.repo http://www.opentlc.com/download/ansible_bootcamp/repo/internal.repo
-      cp /tmp/internal.repo /etc/yum.repos.d/internal.repo
-  register: app_server1_ip
+# - name: Create first App server instance
+#   os_server:
+#     cloud: ospcloud
+#     name: "{{ osp_servers.app1.name }}"
+#     image: rhel-guest
+#     meta: "group={{ osp_servers.app1.meta['group'] }},deployment_name={{ osp_servers.app1.meta['deployment_name'] }}"
+#     flavor: "{{ osp_servers.app1.flavor }}"
+#     security_groups: apps
+#     key_name: ansible_ssh
+#     auto_ip: yes
+#     nics:
+#     - net-name: int_network
+#     userdata: |
+#       #!/bin/bash
+#       curl -o /tmp/openstack.pub http://www.opentlc.com/download/ansible_bootcamp/openstack_keys/openstack.pub
+#       cat /tmp/openstack.pub &gt;&gt; /home/cloud-user/.ssh/authorized_keys
+#       curl -o /tmp/internal.repo http://www.opentlc.com/download/ansible_bootcamp/repo/internal.repo
+#       cp /tmp/internal.repo /etc/yum.repos.d/internal.repo
+#   register: app_server1_ip
 
-- name: Create second App server instance
-  os_server:
-    cloud: ospcloud
-    name: "{{ osp_servers.app2.name }}"
-    image: rhel-guest
-    meta: "group={{ osp_servers.app2.meta[0]['group'] }},deployment_name={{ osp_servers.app2.meta[0]['deployment_name'] }}"
-    flavor: "{{ osp_servers.app2.flavor }}"
-    security_groups: apps
-    key_name: ansible_ssh
-    auto_ip: yes
-    nics:
-    - net-name: int_network
-    userdata: |
-      #!/bin/bash
-      curl -o /tmp/openstack.pub http://www.opentlc.com/download/ansible_bootcamp/openstack_keys/openstack.pub
-      cat /tmp/openstack.pub &gt;&gt; /home/cloud-user/.ssh/authorized_keys
-      curl -o /tmp/internal.repo http://www.opentlc.com/download/ansible_bootcamp/repo/internal.repo
-      cp /tmp/internal.repo /etc/yum.repos.d/internal.repo
-  register: app_server2_ip
+# - name: Create second App server instance
+#   os_server:
+#     cloud: ospcloud
+#     name: "{{ osp_servers.app2.name }}"
+#     image: rhel-guest
+#     meta: "group={{ osp_servers.app2.meta['group'] }},deployment_name={{ osp_servers.app2.meta['deployment_name'] }}"
+#     flavor: "{{ osp_servers.app2.flavor }}"
+#     security_groups: apps
+#     key_name: ansible_ssh
+#     auto_ip: yes
+#     nics:
+#     - net-name: int_network
+#     userdata: |
+#       #!/bin/bash
+#       curl -o /tmp/openstack.pub http://www.opentlc.com/download/ansible_bootcamp/openstack_keys/openstack.pub
+#       cat /tmp/openstack.pub &gt;&gt; /home/cloud-user/.ssh/authorized_keys
+#       curl -o /tmp/internal.repo http://www.opentlc.com/download/ansible_bootcamp/repo/internal.repo
+#       cp /tmp/internal.repo /etc/yum.repos.d/internal.repo
+#   register: app_server2_ip
 
-- name: Create Database server instance
-  os_server:
-    cloud: ospcloud
-    name: "{{ osp_servers.db.name }}"
-    image: rhel-guest
-    meta: "group={{ osp_servers.db.meta[0]['group'] }},deployment_name={{ osp_servers.db.meta[0]['deployment_name'] }}"
-    flavor: "{{ osp_servers.db.flavor }}"
-    security_groups: db
-    key_name: ansible_ssh
-    auto_ip: yes
-    nics:
-    - net-name: int_network
-    userdata: |
-      #!/bin/bash
-      curl -o /tmp/openstack.pub http://www.opentlc.com/download/ansible_bootcamp/openstack_keys/openstack.pub
-      cat /tmp/openstack.pub &gt;&gt; /home/cloud-user/.ssh/authorized_keys
-      curl -o /tmp/internal.repo http://www.opentlc.com/download/ansible_bootcamp/repo/internal.repo
-      cp /tmp/internal.repo /etc/yum.repos.d/internal.repo
-  register: db_server_ip    
+# - name: Create Database server instance
+#   os_server:
+#     cloud: ospcloud
+#     name: "{{ osp_servers.db.name }}"
+#     image: rhel-guest
+#     meta: "group={{ osp_servers.db.meta['group'] }},deployment_name={{ osp_servers.db.meta['deployment_name'] }}"
+#     flavor: "{{ osp_servers.db.flavor }}"
+#     security_groups: db
+#     key_name: ansible_ssh
+#     auto_ip: yes
+#     nics:
+#     - net-name: int_network
+#     userdata: |
+#       #!/bin/bash
+#       curl -o /tmp/openstack.pub http://www.opentlc.com/download/ansible_bootcamp/openstack_keys/openstack.pub
+#       cat /tmp/openstack.pub &gt;&gt; /home/cloud-user/.ssh/authorized_keys
+#       curl -o /tmp/internal.repo http://www.opentlc.com/download/ansible_bootcamp/repo/internal.repo
+#       cp /tmp/internal.repo /etc/yum.repos.d/internal.repo
+#   register: db_server_ip    
 
-- name: print output from os builds
-  debug:
-    var: "{{item}}"
-  loop:
-    - web_server_ip
-    - app_server1_ip
-    - app_server2_ip
-    - db_server_ip
+# - name: print output from os builds
+#   debug:
+#     var: "{{item}}"
+#   loop:
+#     - web_server_ip
+#     - app_server1_ip
+#     - app_server2_ip
+#     - db_server_ip
 
-
-- name: set ostack_appname_list var
+- name: set ostackvars var
   set_fact:
-    ostack_appname_list: "{{osp_servers | json_query('*')}}"
+    ostack_app_list: "{{osp_servers | json_query('*')}}"
 
-- name: Add floating IP to Servers
+- name: print ostack vars
+  debug:
+    msg: "{{item}}"
+  loop: "{{ ostack_app_list }}"
+
+- name: Create a server instance
+  os_server:
+    cloud: ospcloud
+    name: "{{ current_host.name }}"
+    image: "{{ current_host.image }}"
+    meta: "group={{ current_host.meta.group }},deployment_name={{ current_host.meta.deployment_name }}"
+    flavor: "{{current_host.flavor}}"
+    security_groups: "{{ current_host.security_group_name }}"
+    key_name: "{{current_host.key_name}}"
+    wait: yes
+    nics:
+    - net-name: int_network
+    userdata: |
+      #!/bin/bash
+      curl -o /tmp/openstack.pub http://www.opentlc.com/download/ansible_bootcamp/openstack_keys/openstack.pub
+      cat /tmp/openstack.pub >> /home/cloud-user/.ssh/authorized_keys
+      curl -o /tmp/internal.repo http://www.opentlc.com/download/ansible_bootcamp/repo/internal.repo
+      cp /tmp/internal.repo /etc/yum.repos.d/internal.repo
+  register: instanceips
+  loop: "{{ ostack_app_list }}"
+  loop_control:
+    #index_var: current_index
+    loop_var: current_host
+
+- name: print out instanceips var
+  debug:
+    var: instanceips
+
+- name: Add floating IP to "{{ instance_name }}"
   os_floating_ip:
-     cloud: ospcloud
-     server: "{{ item.name }}"
-  loop: "{{ostack_appname_list}}"
+    cloud: ospcloud
+    state: present
+    reuse: yes
+    server: "{{ instanceips.[current_index].name }}"
+    network: ext_network
+    wait: true
+    timeout: 180
+  register: instancefloatingips
+  loop: "{{ instanceips }}"
+  loop_control:
+    index_var: current_index
+    loop_var: current_host
 
-# - name: Wait for server to be available
-#   wait_for:
-#       #active_connection_states: ESTABLISHED,FIN_WAIT1,FIN_WAIT2,SYN_RECV,SYN_SENT,TIME_WAIT # not required. The list of TCP connection states which are counted as active connections.
-#       host: "{{ item.name }}" # not required. A resolvable hostname or IP address to wait for.
-#       connect_timeout: 5 # not required. Maximum number of seconds to wait for a connection to happen before closing and retrying.
-#       port: 22
-#       state: present # not required. choices: absent;drained;present;started;stopped. Either C(present), C(started), or C(stopped), C(absent), or C(drained).,When checking a port C(started) will ensure the port is open, C(stopped) will check that it is closed, C(drained) will check for active connections.,When checking for a file or a search string C(present) or C(started) will ensure that the file or string is present before continuing, C(absent) will check that file is absent or removed.
-#       sleep: 5 # not required. Number of seconds to sleep between checks, before 2.3 this was hardcoded to 1 second.
-#       timeout: 300 # not required. Maximum number of seconds to wait for, when used with another condition it will force an error.,When used without other conditions it is equivalent of just sleeping.
+- name: Show "{{ instanceips }}" public IP
+  debug: var=instancefloatingips.floating_ip.floating_ip_address
+  
+- name: Wait for "{{ instance_name }}" to be available
+  wait_for:
+    host: "{{ instancefloatingips[current_ip].floating_ip.floating_ip_address }}"
+    port: 22
+    search_regex: OpenSSH
+    timeout: 600
+  delegate_to: "{{ inventory_hostname }}"
+  loop: "{{ instancefloatingips }}"
+  loop_control:
+    index_var: current_index
+    loop_var: current_ip
+
+# - name: set ostack_appname_list var
+#   set_fact:
+#     ostack_appname_list: "{{osp_servers | json_query('*')}}"
+
+# - name: Add floating IP to Servers
+#   os_floating_ip:
+#      cloud: ospcloud
+#      server: "{{ item.name }}"
 #   loop: "{{ostack_appname_list}}"
 
-- name: Check the instances status
-  wait_for:
-    host: "{{ item }}"
-    port: 22
-    #search_regex: OpenSSH
-    timeout: 600
-  #delegate_to: localhost
-  loop: #"{{ostack_appname_list}}"
-    - frontend
-    - app1
-    - app2
-    - db
+
+
+# - name: Check the instances status
+#   wait_for:
+#     host: "{{ item }}"
+#     port: 22
+#     #search_regex: OpenSSH
+#     timeout: 600
+#   #delegate_to: localhost
+#   loop: #"{{ostack_appname_list}}"
+#     - frontend
+#     - app1
+#     - app2
+#     - db
