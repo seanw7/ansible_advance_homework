@@ -8,8 +8,7 @@
     image: rhel-guest
     meta: "group={{ osp_servers.frontend.meta[0]['group'] }},deployment_name={{ osp_servers.frontend.meta[0]['deployment_name'] }}"
     flavor: "{{ osp_servers.frontend.flavor }}"
-    security_groups: ICMP_and_SSH
-    
+    security_groups: frontend
     key_name: ansible_ssh
     nics:
     - net-name: int_network
@@ -28,7 +27,7 @@
     image: rhel-guest
     meta: "group={{ osp_servers.app1.meta[0]['group'] }},deployment_name={{ osp_servers.app1.meta[0]['deployment_name'] }}"
     flavor: "{{ osp_servers.app1.flavor }}"
-    security_groups: ICMP_and_SSH
+    security_groups: apps
     key_name: ansible_ssh
     nics:
     - net-name: int_network
@@ -47,7 +46,7 @@
     image: rhel-guest
     meta: "group={{ osp_servers.app2.meta[0]['group'] }},deployment_name={{ osp_servers.app2.meta[0]['deployment_name'] }}"
     flavor: "{{ osp_servers.app2.flavor }}"
-    security_groups: ICMP_and_SSH
+    security_groups: apps
     key_name: ansible_ssh
     nics:
     - net-name: int_network
@@ -66,7 +65,7 @@
     image: rhel-guest
     meta: "group={{ osp_servers.db.meta[0]['group'] }},deployment_name={{ osp_servers.db.meta[0]['deployment_name'] }}"
     flavor: "{{ osp_servers.db.flavor }}"
-    security_groups: ICMP_and_SSH
+    security_groups: db
     key_name: ansible_ssh
     nics:
     - net-name: int_network
@@ -77,6 +76,15 @@
       curl -o /tmp/internal.repo http://www.opentlc.com/download/ansible_bootcamp/repo/internal.repo
       cp /tmp/internal.repo /etc/yum.repos.d/internal.repo
   register: db_server_ip    
+
+- name: print output from os builds
+  debug:
+    var: item
+  loop:
+    - web_server_ip
+    - app_server1_ip
+    - app_server2_ip
+    - db_server_ip
 
 
 - name: set ostack_appname_list var
