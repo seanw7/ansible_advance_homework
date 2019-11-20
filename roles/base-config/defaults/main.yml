@@ -1,2 +1,3 @@
 ---
 # defaults file for base-config
+repo_config_file: open_three-tier-app.repo
