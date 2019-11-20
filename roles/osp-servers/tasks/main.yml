@@ -6,7 +6,7 @@
     cloud: ospcloud
     name: "{{ osp_servers.frontend.name }}"
     image: rhel-guest
-    meta: "group={{ osp_servers.frontend.meta.group }},deployment_name={{ osp_servers.frontend.meta.deployment_name }}"
+    meta: "{{ osp_servers.frontend.meta }}"
     flavor: "{{ osp_servers.frontend.flavor }}"
     security_groups: ICMP_and_SSH
     
@@ -26,7 +26,7 @@
     cloud: ospcloud
     name: "{{ osp_servers.app1.name }}"
     image: rhel-guest
-    meta: "group={{ osp_servers.app1.meta.group }},deployment_name={{ osp_servers.app1.meta.deployment_name }}"
+    meta: "{{ osp_servers.app1.meta }}"
     flavor: "{{ osp_servers.app1.flavor }}"
     security_groups: ICMP_and_SSH
     key_name: ansible_ssh
@@ -45,7 +45,7 @@
     cloud: ospcloud
     name: "{{ osp_servers.app2.name }}"
     image: rhel-guest
-    meta: "group={{ osp_servers.app2.meta.group }},deployment_name={{ osp_servers.app2.meta.deployment_name }}"
+    meta: "{{ osp_servers.app2.meta }}"
     flavor: "{{ osp_servers.app2.flavor }}"
     security_groups: ICMP_and_SSH
     key_name: ansible_ssh
@@ -64,7 +64,7 @@
     cloud: ospcloud
     name: "{{ osp_servers.db.name }}"
     image: rhel-guest
-    meta: "group={{ osp_servers.db.meta.group }},deployment_name={{ osp_servers.db.meta.deployment_name }}"
+    meta: "{{ osp_servers.db.meta }}"
     flavor: "{{ osp_servers.db.flavor }}"
     security_groups: ICMP_and_SSH
     key_name: ansible_ssh
