@@ -106,7 +106,7 @@
     image: "{{ current_host.image }}"
     meta: "group={{ current_host.meta.group }},deployment_name={{ current_host.meta.deployment_name }}"
     flavor: "{{current_host.flavor}}"
-    security_groups: "{{ current_host.security_group_name }}"
+    security_groups: "{{ current_host.security_group }}"
     key_name: "{{current_host.key_name}}"
     wait: yes
     nics:
