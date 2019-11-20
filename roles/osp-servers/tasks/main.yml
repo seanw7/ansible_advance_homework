@@ -83,7 +83,7 @@
 
 - name: print output from os builds
   debug:
-    var: item
+    var: "{{item}}"
   loop:
     - web_server_ip
     - app_server1_ip
