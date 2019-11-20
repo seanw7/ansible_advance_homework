@@ -84,8 +84,7 @@
     ostack_appname_list: "{{osp_servers | json_query('*')}}"
 
 - name: Add floating IP to Servers
-# Add task here and below
-- os_floating_ip:
+  os_floating_ip:
      cloud: ospcloud
      server: "{{ item.name }}"
   loop: "{{ostack_appname_list}}"
