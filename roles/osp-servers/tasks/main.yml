@@ -185,10 +185,10 @@
   debug:
     msg: "{{item}}"
   loop:
-    - frontend_instancefloatingip
-    - app1_instancefloatingip
-    - app2_instancefloatingip
-    - db_instancefloatingip  #.floating_ip.floating_ip_address
+    - "{{frontend_instancefloatingip}}"
+    - "{{app1_instancefloatingip}}"
+    - "{{app2_instancefloatingip}}"
+    - "{{db_instancefloatingip}}"  #.floating_ip.floating_ip_address
   
 - name: Wait for instances to be available
   wait_for:
@@ -198,10 +198,10 @@
     timeout: 600
   delegate_to: "{{ inventory_hostname }}"
   loop: 
-    - frontend_instancefloatingip
-    - app1_instancefloatingip
-    - app2_instancefloatingip
-    - db_instancefloatingip 
+    - "{{frontend_instancefloatingip}}"
+    - "{{app1_instancefloatingip}}"
+    - "{{app2_instancefloatingip}}"
+    - "{{db_instancefloatingip}}" 
   loop_control:
     loop_var: current_ip
 
