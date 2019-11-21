@@ -192,18 +192,35 @@
   
 - name: Wait for instances to be available
   wait_for:
-    host: "{{ current_ip.floating_ip.floating_ip_address }}"
+    host: "{{ frontend_instancefloatingip.floating_ip.floating_ip_address }}"
     port: 22
     search_regex: OpenSSH
     timeout: 600
   delegate_to: "{{ inventory_hostname }}"
-  loop: 
-    - "{{frontend_instancefloatingip}}"
-    - "{{app1_instancefloatingip}}"
-    - "{{app2_instancefloatingip}}"
-    - "{{db_instancefloatingip}}" 
-  loop_control:
-    loop_var: current_ip
+
+- name: Wait for instances to be available
+  wait_for:
+    host: "{{ app1_instancefloatingip.floating_ip.floating_ip_address }}"
+    port: 22
+    search_regex: OpenSSH
+    timeout: 600
+  delegate_to: "{{ inventory_hostname }}"
+
+- name: Wait for instances to be available
+  wait_for:
+    host: "{{ app2_instancefloatingip.floating_ip.floating_ip_address }}"
+    port: 22
+    search_regex: OpenSSH
+    timeout: 600
+  delegate_to: "{{ inventory_hostname }}"
+
+- name: Wait for instances to be available
+  wait_for:
+    host: "{{ db_instancefloatingip.floating_ip.floating_ip_address }}"
+    port: 22
+    search_regex: OpenSSH
+    timeout: 600
+  delegate_to: "{{ inventory_hostname }}"
 
 # - name: set ostack_appname_list var
 #   set_fact:
