@@ -129,7 +129,7 @@
 
 - name: set ostackvars var
   set_fact:
-    ostack_instance_list: "{{instanceips.results | json_query('instanceips.results[*].server[*].'OS-EXT-SRV-ATTR:hostname'')}}"
+    ostack_instance_list: "{{instanceips.results | json_query(instanceips.results[*].server[*].'OS-EXT-SRV-ATTR:hostname')}}"
 
 - name: print ostack vars
   debug:
