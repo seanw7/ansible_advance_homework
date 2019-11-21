@@ -1,5 +1,16 @@
 ---
 
+- name: Fetch Instance Info
+  os_server_facts:
+    cloud: ospcloud
+    server: "*"
+    filters:
+      vm_state: active
+  register: result
+
+- debug:
+    msg: "{{ result.openstack_servers }}"   
+
 # tasks file for osp.servers- name: Create new server instances and attaches them a network and passes metadata to the instance
 - name: Create a frontend server instance
   os_server:

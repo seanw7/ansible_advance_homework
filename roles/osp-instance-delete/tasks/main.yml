@@ -11,5 +11,98 @@
 - debug:
     msg: "{{ result.openstack_servers }}"   
 
-- name: Delete instances
-   
+#- name: Delete instances
+# tasks file for osp.servers- name: Create new server instances and attaches them a network and passes metadata to the instance
+- name: Delete a frontend server instance
+  os_server:
+    cloud: ospcloud
+    name: "{{ osp_servers.frontend.name }}"
+    image: rhel-guest
+    state: absent
+    meta: "group={{ osp_servers.frontend.meta[0]['group'] }},deployment_name={{ osp_servers.frontend.meta[0]['deployment_name'] }}"
+    flavor: "{{ osp_servers.frontend.flavor }}"
+    security_groups: frontend
+    key_name: ansible_ssh
+    auto_ip: yes
+    nics:
+    - net-name: int_network
+    userdata: |
+      #!/bin/bash
+      curl -o /tmp/openstack.pub http://www.opentlc.com/download/ansible_bootcamp/openstack_keys/openstack.pub
+      cat /tmp/openstack.pub &gt;&gt; /home/cloud-user/.ssh/authorized_keys
+      curl -o /tmp/internal.repo http://www.opentlc.com/download/ansible_bootcamp/repo/internal.repo
+      cp /tmp/internal.repo /etc/yum.repos.d/internal.repo
+  register: web_server_ip
+
+- name: Delete first App server instance
+  os_server:
+    cloud: ospcloud
+    name: "{{ osp_servers.app1.name }}"
+    image: rhel-guest
+    state: absent
+    meta: "group={{ osp_servers.app1.meta[0]['group'] }},deployment_name={{ osp_servers.app1.meta[0]['deployment_name'] }}"
+    flavor: "{{ osp_servers.app1.flavor }}"
+    security_groups: apps
+    key_name: ansible_ssh
+    auto_ip: yes
+    nics:
+    - net-name: int_network
+    userdata: |
+      #!/bin/bash
+      curl -o /tmp/openstack.pub http://www.opentlc.com/download/ansible_bootcamp/openstack_keys/openstack.pub
+      cat /tmp/openstack.pub &gt;&gt; /home/cloud-user/.ssh/authorized_keys
+      curl -o /tmp/internal.repo http://www.opentlc.com/download/ansible_bootcamp/repo/internal.repo
+      cp /tmp/internal.repo /etc/yum.repos.d/internal.repo
+  register: app_server1_ip
+
+- name: Delete second App server instance
+  os_server:
+    cloud: ospcloud
+    name: "{{ osp_servers.app2.name }}"
+    image: rhel-guest
+    state: absent
+    meta: "group={{ osp_servers.app2.meta[0]['group'] }},deployment_name={{ osp_servers.app2.meta[0]['deployment_name'] }}"
+    flavor: "{{ osp_servers.app2.flavor }}"
+    security_groups: apps
+    key_name: ansible_ssh
+    auto_ip: yes
+    nics:
+    - net-name: int_network
+    userdata: |
+      #!/bin/bash
+      curl -o /tmp/openstack.pub http://www.opentlc.com/download/ansible_bootcamp/openstack_keys/openstack.pub
+      cat /tmp/openstack.pub &gt;&gt; /home/cloud-user/.ssh/authorized_keys
+      curl -o /tmp/internal.repo http://www.opentlc.com/download/ansible_bootcamp/repo/internal.repo
+      cp /tmp/internal.repo /etc/yum.repos.d/internal.repo
+  register: app_server2_ip
+
+- name: Delete Database server instance
+  os_server:
+    cloud: ospcloud
+    name: "{{ osp_servers.db.name }}"
+    image: rhel-guest
+    state: absent
+    meta: "group={{ osp_servers.db.meta[0]['group'] }},deployment_name={{ osp_servers.db.meta[0]['deployment_name'] }}"
+    flavor: "{{ osp_servers.db.flavor }}"
+    security_groups: db
+    key_name: ansible_ssh
+    auto_ip: yes
+    nics:
+    - net-name: int_network
+    userdata: |
+      #!/bin/bash
+      curl -o /tmp/openstack.pub http://www.opentlc.com/download/ansible_bootcamp/openstack_keys/openstack.pub
+      cat /tmp/openstack.pub &gt;&gt; /home/cloud-user/.ssh/authorized_keys
+      curl -o /tmp/internal.repo http://www.opentlc.com/download/ansible_bootcamp/repo/internal.repo
+      cp /tmp/internal.repo /etc/yum.repos.d/internal.repo
+  register: db_server_ip    
+
+- name: print output from os breakdowns
+  debug:
+    msg: "{{item}}"
+  loop:
+    - "{{web_server_ip}}"
+    - "{{app_server1_ip}}"
+    - "{{app_server2_ip}}"
+    - "{{db_server_ip}}"   
+

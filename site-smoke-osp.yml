@@ -11,6 +11,7 @@
 
   - name: Curl website
     command: "curl frontend"
+    register: webpage
 
   - name: Fail if 'Ansible has done its job' is not in the page content
     fail:
