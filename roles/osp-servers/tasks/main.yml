@@ -129,7 +129,7 @@
 
 - name: set ostack instance query
   set_fact:
-    ostack_instance_query: instanceips.results[*].server[*].'OS\-EXT\-SRV\-ATTR:hostname'
+    ostack_instance_query: instanceips.results[*].server[*].'hostname'
 
 - name: set ostackvars var
   set_fact:
