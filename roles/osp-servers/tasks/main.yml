@@ -142,14 +142,6 @@
     timeout: 180
   register: db_instancefloatingip    
 
-- name: Fetch Instance Info
-  os_server_facts:
-    cloud: ospcloud
-    server: "*"
-    filters:
-      vm_state: active
-  #register: result
-
 - name: Show floating public IP
   debug:
     msg: "{{item}}"
@@ -159,38 +151,39 @@
     - "{{app2_instancefloatingip.floating_ip.floating_ip_address}}"
     - "{{db_instancefloatingip.floating_ip.floating_ip_address}}"  #.floating_ip.floating_ip_address
   
-# - name: Wait for instances to be available
-#   wait_for:
-#     host: "{{ frontend_instancefloatingip.floating_ip.floating_ip_address }}"
-#     port: 22
-#     #search_regex: OpenSSH
-#     timeout: 600
-#   #delegate_to: "{{ inventory_hostname }}"
+- name: Wait for instances to be available
+  wait_for:
+    host: "{{ frontend_instancefloatingip.floating_ip.floating_ip_address }}"
+    port: 22
+    search_regex: OpenSSH
+    timeout: 600
+  delegate_to: "{{ inventory_hostname }}"
 
-# - name: Wait for instances to be available
-#   wait_for:
-#     host: "{{ app1_instancefloatingip.floating_ip.floating_ip_address }}"
-#     port: 22
-#     #search_regex: OpenSSH
-#     timeout: 600
-#   #delegate_to: "{{ inventory_hostname }}"
+- name: Wait for instances to be available
+  wait_for:
+    host: "{{ app1_instancefloatingip.floating_ip.floating_ip_address }}"
+    port: 22
+    search_regex: OpenSSH
+    timeout: 600
+  delegate_to: "{{ inventory_hostname }}"
 
-# - name: Wait for instances to be available
-#   wait_for:
-#     host: "{{ app2_instancefloatingip.floating_ip.floating_ip_address }}"
-#     port: 22
-#     #search_regex: OpenSSH
-#     timeout: 600
-#   #delegate_to: "{{ inventory_hostname }}"
+- name: Wait for instances to be available
+  wait_for:
+    host: "{{ app2_instancefloatingip.floating_ip.floating_ip_address }}"
+    port: 22
+    search_regex: OpenSSH
+    timeout: 600
+  delegate_to: "{{ inventory_hostname }}"
 
-# - name: Wait for instances to be available
-#   wait_for:
-#     host: "{{ db_instancefloatingip.floating_ip.floating_ip_address }}"
-#     port: 22
-#     #search_regex: OpenSSH
-#     timeout: 600
-#   #delegate_to: "{{ inventory_hostname }}"
+- name: Wait for instances to be available
+  wait_for:
+    host: "{{ db_instancefloatingip.floating_ip.floating_ip_address }}"
+    port: 22
+    search_regex: OpenSSH
+    timeout: 600
+  delegate_to: "{{ inventory_hostname }}"
 
-- name: Wait to be sure ssh is available
-  pause:
-    seconds: 30
+
+# - name: Wait to be sure ssh is available
+#   pause:
+#     seconds: 30
