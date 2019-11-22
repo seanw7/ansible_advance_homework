@@ -94,53 +94,6 @@
     - "{{app_server2_ip}}"
     - "{{db_server_ip}}"
 
-# - name: set ostackvars var
-#   set_fact:
-#     ostack_app_list: "{{osp_servers | json_query('*')}}"
-
-# - name: print ostack vars
-#   debug:
-#     msg: "{{item}}"
-#   loop: "{{ ostack_app_list }}"
-
-# - name: Create a server instance
-#   os_server:
-#     cloud: ospcloud
-#     name: "{{ current_host.name }}"
-#     image: "{{ current_host.image }}"
-#     meta: "group={{ current_host.meta.group }},deployment_name={{ current_host.meta.deployment_name }}"
-#     flavor: "{{current_host.flavor}}"
-#     security_groups: "{{ current_host.security_group }}"
-#     key_name: "{{current_host.key_name}}"
-#     wait: yes
-#     nics:
-#     - net-name: int_network
-#     userdata: |
-#       #!/bin/bash
-#       curl -o /tmp/openstack.pub http://www.opentlc.com/download/ansible_bootcamp/openstack_keys/openstack.pub
-#       cat /tmp/openstack.pub >> /home/cloud-user/.ssh/authorized_keys
-#       curl -o /tmp/internal.repo http://www.opentlc.com/download/ansible_bootcamp/repo/internal.repo
-#       cp /tmp/internal.repo /etc/yum.repos.d/internal.repo
-#   register: instanceips
-#   loop: "{{ ostack_app_list }}" #fix this
-#   loop_control:
-#     #index_var: current_index
-#     loop_var: current_host
-
-
-# - name: set ostack instance query
-#   set_fact:
-#     ostack_instance_query: instanceips.results[*].server[*].'hostname'
-
-# - name: set ostackvars var
-#   set_fact:
-#     ostack_instance_list: "{{instanceips.results | json_query(ostack_instance_query)}}"
-
-# - name: print ostack vars
-#   debug:
-#     msg: "{{item}}"
-#   loop: "{{ ostack_instance_list }}"
-
 - name: Add ext_network floating IP to frontend
   os_floating_ip:
     cloud: ospcloud
@@ -202,59 +155,38 @@
     - "{{app2_instancefloatingip.floating_ip.floating_ip_address}}"
     - "{{db_instancefloatingip.floating_ip.floating_ip_address}}"  #.floating_ip.floating_ip_address
   
-- name: Wait for instances to be available
-  wait_for:
-    host: "{{ frontend_instancefloatingip.floating_ip.floating_ip_address }}"
-    port: 22
-    #search_regex: OpenSSH
-    timeout: 600
-  #delegate_to: "{{ inventory_hostname }}"
-
-- name: Wait for instances to be available
-  wait_for:
-    host: "{{ app1_instancefloatingip.floating_ip.floating_ip_address }}"
-    port: 22
-    #search_regex: OpenSSH
-    timeout: 600
-  #delegate_to: "{{ inventory_hostname }}"
-
-- name: Wait for instances to be available
-  wait_for:
-    host: "{{ app2_instancefloatingip.floating_ip.floating_ip_address }}"
-    port: 22
-    #search_regex: OpenSSH
-    timeout: 600
-  #delegate_to: "{{ inventory_hostname }}"
-
-- name: Wait for instances to be available
-  wait_for:
-    host: "{{ db_instancefloatingip.floating_ip.floating_ip_address }}"
-    port: 22
-    #search_regex: OpenSSH
-    timeout: 600
-  #delegate_to: "{{ inventory_hostname }}"
-
-# - name: set ostack_appname_list var
-#   set_fact:
-#     ostack_appname_list: "{{osp_servers | json_query('*')}}"
-
-# - name: Add floating IP to Servers
-#   os_floating_ip:
-#      cloud: ospcloud
-#      server: "{{ item.name }}"
-#   loop: "{{ostack_appname_list}}"
-
-
-
-# - name: Check the instances status
+# - name: Wait for instances to be available
 #   wait_for:
-#     host: "{{ item }}"
+#     host: "{{ frontend_instancefloatingip.floating_ip.floating_ip_address }}"
 #     port: 22
 #     #search_regex: OpenSSH
 #     timeout: 600
-#   #delegate_to: localhost
-#   loop: #"{{ostack_appname_list}}"
-#     - frontend
-#     - app1
-#     - app2
-#     - db
+#   #delegate_to: "{{ inventory_hostname }}"
+
+# - name: Wait for instances to be available
+#   wait_for:
+#     host: "{{ app1_instancefloatingip.floating_ip.floating_ip_address }}"
+#     port: 22
+#     #search_regex: OpenSSH
+#     timeout: 600
+#   #delegate_to: "{{ inventory_hostname }}"
+
+# - name: Wait for instances to be available
+#   wait_for:
+#     host: "{{ app2_instancefloatingip.floating_ip.floating_ip_address }}"
+#     port: 22
+#     #search_regex: OpenSSH
+#     timeout: 600
+#   #delegate_to: "{{ inventory_hostname }}"
+
+# - name: Wait for instances to be available
+#   wait_for:
+#     host: "{{ db_instancefloatingip.floating_ip.floating_ip_address }}"
+#     port: 22
+#     #search_regex: OpenSSH
+#     timeout: 600
+#   #delegate_to: "{{ inventory_hostname }}"
+
+- name: Wait to be sure ssh is available
+  pause:
+    seconds: 30
