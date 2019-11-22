@@ -9,8 +9,14 @@
     tags:
       - osp.smoke
 
+  - name: print openstack servers
+    debug:
+      msg: "{{openstack_info.openstack_servers }}"
+
   - name: Curl website
-    command: "curl frontend"
+    uri:
+      url: "{{item}}" # required. HTTP or HTTPS URL in the form (http|https)://host.domain[:port]/path
+    loop: "{{openstack_info.openstack_servers }}"
     register: webpage
 
   - name: Fail if 'Ansible has done its job' is not in the page content

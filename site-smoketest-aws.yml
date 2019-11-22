@@ -1,5 +1,23 @@
 - hosts: frontends
   gather_facts: false
   tasks:
-  - name: Use Uri module for wrting smoke test.
+
+  - name: gather facts for frontend
+    ec2_instance_facts:
+      region: "{{ REGION_NAME }}"
+      filters:
+        "tag:instance_filter": "three-tier-app-{{ EMAIL }}"
+        "tag:AnsibleGroup": 'frontends'
+    register: result  
+
+  - name: Curl website
+    uri:
+     url: "http://{{item.public_ip_address }}"
+     return_content: yes
+    loop: "{{ result.instances }}"
+    register: webpage
+    
   - name: Fail if 'Ansible has done its job' is not in the page content
+    fail:
+     msg: "The Three Appplication deployment failed on Prod"
+    when: "'Ansible has done its job' not in webpage.results[0].content"
