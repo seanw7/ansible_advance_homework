@@ -9,8 +9,10 @@
     meta: "group={{ osp_servers.frontend.meta[0]['group'] }},deployment_name={{ osp_servers.frontend.meta[0]['deployment_name'] }}"
     flavor: "{{ osp_servers.frontend.flavor }}"
     security_groups: "{{ osp_servers.frontend.security_group }}"
+    state: started
     key_name: ansible_ssh
     auto_ip: yes
+    wait: yes
     nics:
     - net-name: int_network
     userdata: |
@@ -31,6 +33,7 @@
     security_groups: "{{ osp_servers.app1.security_group }}"
     key_name: ansible_ssh
     auto_ip: yes
+    wait: yes
     nics:
     - net-name: int_network
     userdata: |
@@ -51,6 +54,7 @@
     security_groups: "{{ osp_servers.app2.security_group }}"
     key_name: ansible_ssh
     auto_ip: yes
+    wait: yes
     nics:
     - net-name: int_network
     userdata: |
@@ -71,6 +75,7 @@
     security_groups: "{{ osp_servers.db.security_group }}"
     key_name: ansible_ssh
     auto_ip: yes
+    wait: yes
     nics:
     - net-name: int_network
     userdata: |
