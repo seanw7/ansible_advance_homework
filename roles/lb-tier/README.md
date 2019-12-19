@@ -1,7 +1,7 @@
 lb-tier
 =========
 
-This role installs haproxy and httpie, and configures haproxy
+This role installs and configures haproxy
 
 Example Playbook
 ----------------

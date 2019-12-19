@@ -1,7 +1,7 @@
-Role Name
+setup-workstation
 =========
 
-A brief description of the role goes here.
+This role runs a setup and configures the homework lab workstation to the proper specifications
 
 Requirements
 ------------

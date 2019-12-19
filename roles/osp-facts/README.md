@@ -1,7 +1,7 @@
-Role Name
+osp-facts
 =========
 
-A brief description of the role goes here.
+This role collects information about OpenStack instances.
 
 Requirements
 ------------

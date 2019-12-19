@@ -1,4 +1,4 @@
-osp-sservers
+osp-servers
 =========
 
 This role creates 4 OpenStack instances. One for each frontend; db; app1; app2

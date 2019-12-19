@@ -1,7 +1,7 @@
-Role Name
+osp-instance-delete
 =========
 
-A brief description of the role goes here.
+This role breakdown OpenStack instances
 
 Requirements
 ------------
