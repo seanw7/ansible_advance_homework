@@ -1,30 +1,16 @@
 - hosts: frontends
   gather_facts: false
-  vars:
-    REGION_NAME: us-east-1
-    EMAIL: sean.wilkie-technologent.com
   tasks:
-  - name: Ensure boto3 is installed
-    pip:
-      name: boto3
-      executable: pip3
+    - name: Use Uri module for wrting smoke test.
+      uri:
+        url: "http://{{ inventory_hostname }}"
+        return_content: true
+      register: webpage
+      tags:
+        - aws.smoke
 
-  - name: gather facts for frontend
-    ec2_instance_facts:
-      region: "{{ REGION_NAME }}"
-      filters:
-        "tag:instance_filter": "three-tier-app-{{ EMAIL }}"
-        "tag:AnsibleGroup": 'frontends'
-    register: result  
-
-  - name: Curl website
-    uri:
-     url: "http://{{item.public_ip_address }}"
-     return_content: yes
-    loop: "{{ result.instances }}"
-    register: webpage
-
-  - name: Fail if 'Ansible has done its job' is not in the page content
-    fail:
-     msg: "The Three Appplication deployment failed on Prod"
-    when: "'Ansible' not in webpage.content"
+    - name: Fail if 'Ansible has done its job' is not in the page content
+      fail:
+      when: "'Ansible has done its job' not in webpage.content"
+      tags:
+        - aws.smoke
