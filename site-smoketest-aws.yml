@@ -4,6 +4,9 @@
     REGION_NAME: us-east-1
     EMAIL: sean.wilkie-technologent.com
   tasks:
+  - name: Ensure boto3 is installed
+    pip:
+      name: boto3
 
   - name: gather facts for frontend
     ec2_instance_facts:
