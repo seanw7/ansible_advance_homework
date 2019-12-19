@@ -1,16 +1,16 @@
 - hosts: frontends
   gather_facts: false
   tasks:
-    - name: Use Uri module for wrting smoke test.
-      uri:
-        url: "http://{{ inventory_hostname }}"
-        return_content: true
-      register: webpage
-      tags:
-        - aws.smoke
+  - name: curl against host for smoke test.
+    uri:
+      url: "http://{{ inventory_hostname }}"
+      return_content: true
+    register: webpage
+    tags:
+      - aws.smoke
 
-    - name: Fail if 'Ansible has done its job' is not in the page content
-      fail:
-      when: "'Ansible has done its job' not in webpage.content"
-      tags:
-        - aws.smoke
+  - name: Fail if 'Ansible has done its job' is not in the page content
+    fail:
+    when: "'Ansible has done its job' not in webpage.content"
+    tags:
+      - aws.smoke
