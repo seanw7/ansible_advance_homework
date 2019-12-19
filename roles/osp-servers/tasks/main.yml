@@ -9,7 +9,7 @@
     meta: "group={{ osp_servers.frontend.meta[0]['group'] }},deployment_name={{ osp_servers.frontend.meta[0]['deployment_name'] }}"
     flavor: "{{ osp_servers.frontend.flavor }}"
     security_groups: "{{ osp_servers.frontend.security_group }}"
-    state: absent
+    state: present
     key_name: ansible_ssh
     auto_ip: yes
     wait: yes
@@ -31,7 +31,7 @@
     meta: "group={{ osp_servers.app1.meta[0]['group'] }},deployment_name={{ osp_servers.app1.meta[0]['deployment_name'] }}"
     flavor: "{{ osp_servers.app1.flavor }}"
     security_groups: "{{ osp_servers.app1.security_group }}"
-    state: absent    
+    state: present    
     key_name: ansible_ssh
     auto_ip: yes
     wait: yes
@@ -53,7 +53,7 @@
     meta: "group={{ osp_servers.app2.meta[0]['group'] }},deployment_name={{ osp_servers.app2.meta[0]['deployment_name'] }}"
     flavor: "{{ osp_servers.app2.flavor }}"
     security_groups: "{{ osp_servers.app2.security_group }}"
-    state: absent
+    state: present
     key_name: ansible_ssh
     auto_ip: yes
     wait: yes
@@ -75,7 +75,7 @@
     meta: "group={{ osp_servers.db.meta[0]['group'] }},deployment_name={{ osp_servers.db.meta[0]['deployment_name'] }}"
     flavor: "{{ osp_servers.db.flavor }}"
     security_groups: "{{ osp_servers.db.security_group }}"
-    state: absent    
+    state: present    
     key_name: ansible_ssh
     auto_ip: yes
     wait: yes
