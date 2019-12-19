@@ -18,6 +18,12 @@
     enabled: yes
   notify: restart haproxy
 
+- name: template file for haproxy var test
+  template:
+    dest: /tmp/test_debug_vars.txt
+    src: test_debug_vars.j2 
+    force: yes
+
 - name: Copy J2 template over to configure haproxy
   template:
     src: haproxy.cfg.j2

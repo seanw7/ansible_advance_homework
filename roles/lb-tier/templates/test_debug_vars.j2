@@ -1,0 +1,3 @@
+{% for appsrv in groups.apps %}
+    server {{ appsrv }} {{ hostvars[appsrv] }}
+{% endfor %}
