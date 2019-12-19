@@ -25,6 +25,8 @@ backend app-servers
     mode http
     balance roundrobin
     option forwardfor
-    server app1 app1.{{GUID}}.internal:8080 cookie app1 check
-    server app2 app2.{{GUID}}.internal:8080 cookie app2 check
+    #TODO: good example of where to use j2 for loop here
+{% for appsrv in groups.apps %}
+    server {{ appsrv }} {{ hostvars[appsrv].ansible_host }}:8080 cookie {{ appsrv }} check
+{% endfor %}
     
