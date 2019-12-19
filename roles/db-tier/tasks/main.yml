@@ -28,7 +28,7 @@
   - name: initilize postgres
     command: postgresql-setup initdb
 
-  - name: initilize postgres some more
+  - name: checkconfig on for postgres
     command: chkconfig postgresql on
 
   - name: start postgres

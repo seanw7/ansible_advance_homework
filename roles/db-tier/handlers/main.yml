@@ -1,0 +1,7 @@
+---
+- name: start postgres
+  service:
+    name: postgresql.service
+    state: restarted
+    enabled: true
+  listen: restart_postgres

@@ -1,7 +1,7 @@
-Role Name
+osp-sservers
 =========
 
-A brief description of the role goes here.
+This role creates 4 OpenStack instances. One for each frontend; db; app1; app2
 
 Requirements
 ------------

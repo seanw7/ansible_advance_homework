@@ -5,3 +5,5 @@
   service:
     name: haproxy
     state: restarted
+    enabled: true
+  listen: restart_haproxy

@@ -1,0 +1,7 @@
+---
+- name: Ensure Tomcat is restarted and enabled
+  service:
+    name: tomcat
+    state: restarted
+    enabled: true
+  listen: restart_tomcat

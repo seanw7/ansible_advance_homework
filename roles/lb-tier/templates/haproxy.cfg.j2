@@ -25,8 +25,7 @@ backend app-servers
     mode http
     balance roundrobin
     option forwardfor
-    #TODO: good example of where to use j2 for loop here
 {% for appsrv in groups.apps %}
-    server {{ appsrv }} {{ hostvars[appsrv].inventory_hostname }}:8080 cookie {{ appsrv }} check
+    server {{ appsrv }} {{ appsrv }}:8080 cookie {{ appsrv }} check
 {% endfor %}
     
