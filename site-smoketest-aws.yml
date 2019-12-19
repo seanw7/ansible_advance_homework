@@ -1,5 +1,7 @@
 - hosts: frontends
   gather_facts: false
+  vars:
+    REGION_NAME: us-east-1
   tasks:
 
   - name: gather facts for frontend
