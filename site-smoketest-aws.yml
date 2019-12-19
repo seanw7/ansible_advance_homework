@@ -7,6 +7,7 @@
   - name: Ensure boto3 is installed
     pip:
       name: boto3
+      executable: pip3
 
   - name: gather facts for frontend
     ec2_instance_facts:
