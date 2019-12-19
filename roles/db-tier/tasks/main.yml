@@ -1,46 +1,20 @@
 ---
 # tasks file for db-tier
 # tasks file for postgres_install
-- name: Install latest version of postgresql-server with Yum
+- name: install postgres
   yum:
     name: postgresql-server
     state: latest
+  register: pg_install
+  notify: restart_postgres
 
-#TODO: Fix incorrect template name after confirming its needed
-#   - name: enable apache at boot
-#     service:
-#       name: postgresql
-#       enabled: yes
+- name: check if data directory exists
+  stat:
+    path: /var/lib/pgsql/data
+  register: pg_datapath
 
-#TODO: Figure out best way to make sure postgres database is initialized
-- name: Attempt to start postgres service...
-  service:
-    name: postgresql.service
-    state: started
-    enabled: yes
-  register: postgres_service_info
-  ignore_errors: yes
-
-# TODO: best practive to test if a file exists instead of my method...
-- when: postgres_service_info.failed
-  block:
- # only run the next 2 tasks once!
-  - name: initilize postgres
-    command: postgresql-setup initdb
-
-  - name: checkconfig on for postgres
-    command: chkconfig postgresql on
-
-  - name: start postgres
-    service:
-      name: postgresql.service
-      state: started
-      enabled: yes
-    register: postgres_service_info
-
-- name: Debug postgres.service info
-  debug:
-    var: postgres_service_info
-
-
+- name: initilize postgres
+  command: postgresql-setup initdb
+  when: not pg_datapath.stat.exists or pg_install is changed
+  notify: restart_postgres
       
