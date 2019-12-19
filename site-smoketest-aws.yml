@@ -20,4 +20,4 @@
   - name: Fail if 'Ansible has done its job' is not in the page content
     fail:
      msg: "The Three Appplication deployment failed on Prod"
-    when: "'Ansible' not in webpage.results[0].content"
+    when: "'Ansible' not in webpage.content"
