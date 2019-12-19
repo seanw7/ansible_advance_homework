@@ -2,6 +2,7 @@
   gather_facts: false
   vars:
     REGION_NAME: us-east-1
+    EMAIL: sean.wilkie-technologent.com
   tasks:
 
   - name: gather facts for frontend
