@@ -27,6 +27,6 @@ backend app-servers
     option forwardfor
     #TODO: good example of where to use j2 for loop here
 {% for appsrv in groups.apps %}
-    server {{ appsrv }} {{ hostvars[appsrv].ansible_host }}:8080 cookie {{ appsrv }} check
+    server {{ appsrv }} {{ hostvars[appsrv].inventory_hostname }}:8080 cookie {{ appsrv }} check
 {% endfor %}
     
